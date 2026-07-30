@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us — AAWC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Montserrat:wght@400;600&family=Saira:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+            font-family: 'Cinzel', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #E9E7EC;
+        }
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        img {
+            -webkit-user-drag: none;
+            pointer-events: auto;
+        }
+
+        p { font-family: 'Montserrat', sans-serif; }
+
+        /* ── Navbar ── */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            padding: 7px 20px;
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+        }
+        .navbarscroll { background-color: #E9E7EC; }
+        .navbar.navbarscroll a { color: #2F2738; text-shadow: none; }
+
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0; margin: 0;
+        }
+        .navbar a {
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            color: #E9E7EC;
+            font-weight: bold;
+            padding: 8px 16px;
+        }
+        .navbar a.active-page {
+            color: #c4a8e0;
+            position: relative;
+        }
+        .navbar a.active-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 16px;
+            right: 16px;
+            height: 2px;
+            background-color: #c4a8e0;
+            border-radius: 1px;
+        }
+        .navbar.navbarscroll a.active-page { color: #564666; }
+        .navbar.navbarscroll a.active-page::before { background-color: #564666; }
+        .navbar-right {
+            margin-left: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .navbar-right a { padding: 0; font-size: 0.85em; }
+
+        /* ── Hero ── */
+        .treatments-hero {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+            margin-bottom: 60px;
+            overflow: hidden;
+        }
+        .treatments-hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('images/hero.jpeg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.6);
+        }
+        .treatments-hero-content {
+            position: absolute;
+            left: 80px;
+            right: 80px;
+            bottom: 4%;
+            z-index: 1;
+        }
+        .treatments-hero-breadcrumb {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.78em;
+            letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.85);
+            margin: 0 0 14px 0;
+        }
+        .treatments-hero-breadcrumb a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+        }
+        .treatments-hero-breadcrumb a:hover { color: #c4a8e0; }
+        .treatments-hero h1 {
+            font-family: 'Cinzel', serif;
+            color: white;
+            font-size: 3.2em;
+            margin: 0;
+            letter-spacing: 0.08em;
+            text-shadow: 2px 2px 12px rgba(0,0,0,0.5);
+        }
+
+        /* ── Intro strip ── */
+        .treatments-intro {
+            background-color: #E9E7EC;
+            text-align: center;
+            padding: 40px 80px;
+        }
+        .treatments-intro p {
+            color: #564666;
+            font-size: 0.95em;
+            max-width: 720px;
+            margin: 0 auto 10px auto;
+            line-height: 2.0;
+            letter-spacing: 0.02em;
+        }
+        .treatments-intro p:last-child { margin-bottom: 0; }
+        .treatments-intro .location-note {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8em;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #2e2338;
+        }
+
+        /* ── Section shared ── */
+        .treatments-section {
+            padding: 80px;
+        }
+        .treatments-section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.9em;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #564666;
+            margin: 0 0 60px 0;
+            text-align: center;
+        }
+
+        /* ── Our Mission ── */
+        .benefits-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 90px;
+            align-items: center;
+            width: 100%;
+        }
+        .benefits-block-img-frame {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            height: 340px;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        .benefits-block-img {
+            position: absolute;
+            top: -10%;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            object-fit: cover;
+            display: block;
+        }
+        .benefits-copy-heading {
+            position: relative;
+            display: inline-block;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 2.3em;
+            color: #2e2338;
+            margin: 0 0 40px 0;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+        .benefits-heading-underline {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -6px;
+            height: 3px;
+            background-color: #564666;
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+        .benefits-copy p {
+            color: #555;
+            font-size: 1.08em;
+            line-height: 2.1;
+            margin: 0 0 24px 0;
+        }
+        .benefits-copy p:last-child { margin-bottom: 0; }
+        .benefits-copy strong { color: #2e2338; }
+
+        /* ── Staff ── */
+        .staff-section {
+            padding: 100px 80px;
+            background-color: #f5f3f7;
+        }
+        .staff-section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.9em;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #564666;
+            text-align: center;
+            margin: 0 0 70px 0;
+        }
+        .staff-list {
+            display: flex;
+            flex-direction: column;
+            gap: 70px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .staff-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 50px;
+        }
+        .staff-card:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .staff-photo {
+            flex: 0 0 260px;
+            height: 320px;
+            object-fit: cover;
+            object-position: center top;
+            border-radius: 12px;
+            display: block;
+        }
+        .staff-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .staff-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5em;
+            color: #2e2338;
+            margin: 0 0 6px 0;
+            letter-spacing: 0.05em;
+        }
+        .staff-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85em;
+            color: #564666;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin: 0 0 20px 0;
+        }
+        .staff-divider {
+            width: 40px;
+            height: 2px;
+            background-color: #564666;
+            margin-bottom: 20px;
+        }
+        .staff-bio {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95em;
+            color: #555;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        /* ── CTA Banner ── */
+        .treatments-cta {
+            position: relative;
+            height: 480px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+        .treatments-cta-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('images/ChatGPT Image Jul 26, 2026, 06_15_45 PM.png');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.35) saturate(1.2) contrast(1.1);
+        }
+        .treatments-cta-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            text-align: center;
+            padding: 0 60px;
+        }
+        .treatments-cta h2 {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            color: white;
+            font-size: 2.3em;
+            margin: 0 0 16px 0;
+            letter-spacing: 0.05em;
+        }
+        .treatments-cta p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95em;
+            font-weight: 700;
+            max-width: 560px;
+            margin: 0 auto 30px auto;
+            line-height: 1.9;
+        }
+        .treatments-cta-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+        }
+        .treatments-cta-phone {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            color: white;
+            font-size: 0.95em;
+            letter-spacing: 0.05em;
+        }
+        .treatments-cta-btn {
+            display: inline-block;
+            background-color: transparent;
+            border: 3px solid #6E5A54;
+            color: white;
+            padding: 16px 40px;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.85em;
+            letter-spacing: 0.08em;
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
+        }
+        .treatments-cta-btn:hover {
+            background-color: rgba(110, 90, 84, 0.25);
+        }
+
+        /* ── Footer ── */
+        .site-footer { background-color: #1a1420; color: #ccc; font-family: 'Montserrat', sans-serif; }
+        .footer-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+            padding: 60px 80px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .footer-logo-col { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+        .footer-tagline { font-size: 0.8em; color: rgba(255,255,255,0.45); line-height: 1.8; margin: 0; }
+        .footer-contact-col h4, .footer-social-col h4 {
+            font-family: 'Cinzel', serif; color: white;
+            font-size: 0.85em; letter-spacing: 0.15em;
+            text-transform: uppercase; margin: 0 0 20px 0;
+        }
+        .footer-contact-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+        .footer-contact-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.88em; color: rgba(255,255,255,0.6); line-height: 1.7; }
+        .footer-contact-list li svg { flex-shrink: 0; margin-top: 2px; opacity: 0.7; }
+        .footer-contact-list a { color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+        .footer-contact-list a:hover { color: white; }
+        .footer-social-links { display: flex; flex-direction: column; gap: 12px; }
+        .footer-social-link { display: flex; align-items: center; gap: 12px; font-size: 0.88em; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+        .footer-social-link:hover { color: white; }
+        .footer-social-link svg { opacity: 0.7; flex-shrink: 0; }
+        .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 20px 80px; font-size: 0.78em; color: rgba(255,255,255,0.3); }
+        .shadow-text { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="main-navbar">
+        <a href="new-website.html" style="display:inline-flex;align-items:center;padding:0;"><img src="images/Asset+6.png" id="navbar-logo" alt="AWC Logo" style="width: 100px; height: auto; margin: 20px;"></a>
+        <ul class="nav-links">
+            <a href="treatments.html" class="shadow-text">TREATMENTS</a>
+            <a href="offers.html" class="shadow-text">OFFERS</a>
+            <a href="gallery.html" class="shadow-text">GALLERY</a>
+            <a href="about.html" class="shadow-text active-page">ABOUT US</a>
+        </ul>
+        <div class="navbar-right">
+            <a href="#" class="shadow-text">610.7.BEAUTY</a>
+            <button class="shadow-text" style="background-color: #564666; color: white; border: none; border-radius: 8px; padding: 10px 20px; cursor: pointer; font-family: 'Cinzel', serif;">BOOK NOW</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="treatments-hero">
+        <div class="treatments-hero-bg"></div>
+        <div class="treatments-hero-content">
+            <p class="treatments-hero-breadcrumb"><a href="new-website.html">Home</a> / About Us</p>
+            <h1>About Us</h1>
+        </div>
+    </div>
+
+    <!-- Intro -->
+    <div class="treatments-intro">
+        <p>Abington Aesthetics &amp; Wellness Center was built on a simple idea: exceptional care and advanced technology shouldn't be out of reach. Get to know the people and the purpose behind every treatment we offer.</p>
+        <p class="location-note">Proudly serving Abington, PA and the surrounding community</p>
+    </div>
+
+    <!-- Our Mission -->
+    <section class="treatments-section">
+        <div class="benefits-block">
+            <div class="benefits-block-img-frame">
+                <img class="benefits-block-img" src="images/face aesthetics.jpg" alt="Confident clients">
+            </div>
+            <div class="benefits-copy">
+                <h2 class="benefits-copy-heading">Our Mission<span class="benefits-heading-underline"></span></h2>
+                <p>At Abington Aesthetics &amp; Wellness Center, our mission is simple: help every client look in the mirror and feel proud of what they see. We believe real confidence comes from feeling comfortable in your own skin, not chasing an unrealistic ideal.</p>
+                <p>That's why we combine advanced, non-invasive technology with a genuinely caring team — so every treatment plan is built around your goals, your body, and your life, not a one-size-fits-all approach.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Staff -->
+    <section class="staff-section">
+        <h2 class="staff-section-title">Meet the Team</h2>
+        <div class="staff-list">
+
+            <div class="staff-card">
+                <img class="staff-photo" src="images/480610210_1164124525715499_8280883702688299265_n.jpg.webp" alt="Staff member">
+                <div class="staff-info">
+                    <h3 class="staff-name">Dr. Mike Cheng</h3>
+                    <p class="staff-title">Lead Aesthetician</p>
+                    <div class="staff-divider"></div>
+                    <p class="staff-bio">Dr. Mike Cheng brings over 10 years of experience in aesthetic medicine and body contouring. He specializes in non-invasive treatments and is passionate about helping clients feel confident in their own skin. His gentle approach and expert technique have made him a client favorite.</p>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <img class="staff-photo" src="images/IMG_4454.JPG.webp" alt="Staff member">
+                <div class="staff-info">
+                    <h3 class="staff-name">Jessica Spears</h3>
+                    <p class="staff-title">Wellness Specialist</p>
+                    <div class="staff-divider"></div>
+                    <p class="staff-bio">Jessica has been practicing cosmetology with Dr. Mike Cheng for a long time. She designs personalized treatment plans that address both body and mind, ensuring each client leaves feeling restored and revitalized.</p>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <img class="staff-photo" src="images/stephanie.webp" alt="Staff member">
+                <div class="staff-info">
+                    <h3 class="staff-name">Stephanie Wang</h3>
+                    <p class="staff-title">Body Contouring Expert</p>
+                    <div class="staff-divider"></div>
+                    <p class="staff-bio">Stephanie is our resident expert in Emsculpt Neo and T-shape treatments. With a deep understanding of muscle physiology and body composition, she tailors every session to maximize results and comfort for each individual client.</p>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <img class="staff-photo" src="images/Allyson.png" alt="Staff member">
+                <div class="staff-info">
+                    <h3 class="staff-name">Allyson</h3>
+                    <p class="staff-title">Sales Manager</p>
+                    <div class="staff-divider"></div>
+                    <p class="staff-bio">Allyson leads our sales team, helping clients find the right treatment plan for their goals and budget. Her warm, straightforward approach makes it easy to ask questions and feel confident about every decision.</p>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <img class="staff-photo" src="images/Ruby.png" alt="Staff member">
+                <div class="staff-info">
+                    <h3 class="staff-name">Ruby</h3>
+                    <p class="staff-title">Assistant Aesthetician</p>
+                    <div class="staff-divider"></div>
+                    <p class="staff-bio">Ruby supports our aesthetic team with hands-on care during every treatment, making sure each client is comfortable from start to finish. She's detail-oriented and always ready to help however she can.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <div class="treatments-cta">
+        <div class="treatments-cta-bg"></div>
+        <div class="treatments-cta-content">
+            <h2>Ready to Meet Your Goals? — In Abington, PA</h2>
+            <p>Schedule a consultation with our team and find out which treatment plan is right for you.</p>
+            <div class="treatments-cta-actions">
+                <a href="#" class="treatments-cta-btn">Schedule a Consultation</a>
+                <span class="treatments-cta-phone">610.7.BEAUTY</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-body">
+            <div class="footer-logo-col">
+                <img src="images/Asset+6.png" alt="AAWC Logo" style="width: 140px; height: auto; object-fit: contain;">
+                <p class="footer-tagline">Empowering you to look and feel your best through cutting-edge, non-invasive treatments.</p>
+            </div>
+            <div class="footer-contact-col">
+                <h4>Contact Us</h4>
+                <ul class="footer-contact-list">
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                        1422 Easton Road<br>Abington, PA 19001
+                    </li>
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
+                        <a href="tel:+12153462155">(215) 346-2155</a>
+                    </li>
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <a href="mailto:support@abingtonawc.com">support@abingtonawc.com</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer-social-col">
+                <h4>Follow Us</h4>
+                <div class="footer-social-links">
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        Instagram
+                    </a>
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                        Facebook
+                    </a>
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+                        Twitter / X
+                    </a>
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Advanced Aesthetics &amp; Wellness Center. All rights reserved.</span>
+            <span>Designed with care.</span>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Block copy/cut and image dragging
+        document.addEventListener('copy', (e) => e.preventDefault());
+        document.addEventListener('cut', (e) => e.preventDefault());
+        document.addEventListener('dragstart', (e) => e.preventDefault());
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('main-navbar');
+        const navLogo = document.getElementById('navbar-logo');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY > 50;
+            navbar.classList.toggle('navbarscroll', scrolled);
+            navLogo.src = scrolled ? 'images/Asset+3.png.webp' : 'images/Asset+6.png';
+        });
+
+        // Hero intro zoom (big to small settle)
+        gsap.from('.treatments-hero-bg', {
+            scale: 1.15,
+            duration: 1.3,
+            ease: 'power2.out',
+        });
+
+        // Hero parallax
+        gsap.to('.treatments-hero-bg', {
+            yPercent: 20,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.treatments-hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true,
+            }
+        });
+
+        // Intro fade in
+        gsap.set('.treatments-intro', { opacity: 0, y: 20 });
+        ScrollTrigger.create({
+            trigger: '.treatments-intro',
+            start: 'top 90%',
+            onEnter: () => {
+                gsap.to('.treatments-intro', { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' });
+            },
+            once: true,
+        });
+
+        // Mission paragraph fade in
+        gsap.set('.benefits-copy p', { opacity: 0, y: 20 });
+        ScrollTrigger.create({
+            trigger: '.benefits-copy',
+            start: 'top 85%',
+            onEnter: () => {
+                gsap.to('.benefits-copy p', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.2 });
+            },
+            once: true,
+        });
+
+        // Mission image shifts within its fixed-size frame as the page scrolls
+        gsap.fromTo('.benefits-block-img',
+            { y: -25 },
+            {
+                y: 25,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.benefits-block-img-frame',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true,
+                }
+            }
+        );
+
+        // Underline draws in under the "Our Mission" heading
+        gsap.set('.benefits-heading-underline', { scaleX: 0 });
+        ScrollTrigger.create({
+            trigger: '.benefits-copy-heading',
+            start: 'top 85%',
+            onEnter: () => {
+                gsap.to('.benefits-heading-underline', { scaleX: 1, duration: 0.7, ease: 'power2.out', delay: 0.2 });
+            },
+            once: true,
+        });
+
+        // Staff cards slide in alternating from left/right
+        const staffCards = document.querySelectorAll('.staff-card');
+        const staffDirections = [120, -120, 120, -120, 120];
+        staffCards.forEach((card, i) => {
+            gsap.set(card, { opacity: 0, x: staffDirections[i] });
+            ScrollTrigger.create({
+                trigger: card,
+                start: 'top 82%',
+                onEnter: () => {
+                    gsap.to(card, { opacity: 1, x: 0, duration: 0.85, ease: 'power3.out' });
+                },
+                once: true,
+            });
+        });
+
+        // CTA banner fade in
+        gsap.set('.treatments-cta', { opacity: 0 });
+        ScrollTrigger.create({
+            trigger: '.treatments-cta',
+            start: 'top 85%',
+            onEnter: () => {
+                gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
+            },
+            once: true,
+        });
+    </script>
+</body>
+</html>

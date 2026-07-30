@@ -1,0 +1,1027 @@
+<!DOCTYPE html lang="en">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Abington Aesthetics and Wellness Center </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Montserrat:wght@400;600&family=Saira:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <style>
+        html, body {
+            font-family: 'Cinzel', serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #E9E7EC;
+        }
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        img {
+            -webkit-user-drag: none;
+            pointer-events: auto;
+        }
+
+        .coverimg {
+            display: block;
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            padding: 7px 20px;
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .navbarscroll {
+            background-color: #E9E7EC;
+        }
+
+        .navbar.navbarscroll a {
+            color: #2F2738;
+            text-shadow: none;
+        }
+
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navbar a {
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            color: #E9E7EC;
+            font-weight: bold;
+            padding: 8px 16px;
+        }
+
+        .navbar a.active-page {
+            color: #c4a8e0;
+            position: relative;
+        }
+        .navbar a.active-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 16px;
+            right: 16px;
+            height: 2px;
+            background-color: #c4a8e0;
+            border-radius: 1px;
+        }
+        .navbar.navbarscroll a.active-page { color: #564666; }
+        .navbar.navbarscroll a.active-page::before { background-color: #564666; }
+
+        .navbar-right {
+            margin-left: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .navbar-right a {
+            padding: 0;
+            font-size: 0.85em;
+        }
+
+        p {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .shadow-text {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .slide-in-bottom {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .slide-in-bottom.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transition: opacity 1.8s ease-out;
+        }
+
+        .fade-in.in-view {
+            opacity: 1;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .row img {
+            width: 400px;
+            height: 500px;
+            object-fit: cover;
+            object-position: center;
+            margin-bottom: 20px;
+        }
+
+        .hero-band {
+            position: relative;
+            background-color: #6E5A54;
+            padding: 50px 5%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-band img {
+            display: block;
+            width: 90%;
+            max-width: 1500px;
+            height: 640px;
+            object-fit: cover;
+            object-position: top center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        }
+
+        .slideshow-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slideshow-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .mySlides {
+            position: relative;
+            flex: 0 0 70%;
+            margin: 0 1%;
+            border-radius: 8px;
+            overflow: hidden;
+            opacity: 0.5;
+            transform: scale(0.92);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .mySlides.active-slide {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .mySlides img {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .slide-text {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            color: white;
+            font-family: 'Cinzel', serif;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .slide-btn {
+            display: inline-block;
+            background-color: rgba(86, 70, 102, 0.8);
+            color: white;
+            padding: 14px 40px;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 1em;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .slide-btn:hover {
+            background-color: rgba(86, 70, 102, 1);
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 16px 20px;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: none;
+            transition: background-color 0.3s ease;
+            user-select: none;
+            z-index: 10;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        .dot-container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 4px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .dot.active {
+            background-color: #564666;
+        }
+
+        .newsletter-section {
+            position: relative;
+            padding: 100px 60px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .newsletter-bg {
+            position: absolute;
+            inset: -30%;
+            background-image: url('images/Asset+6.png');
+            background-size: 320px auto;
+            background-repeat: repeat;
+            background-position: center;
+            z-index: 0;
+            will-change: transform;
+        }
+        .newsletter-inner {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 560px;
+            width: 100%;
+            background-color: rgba(86, 70, 102, 0.78);
+            padding: 60px 50px;
+            box-sizing: border-box;
+        }
+        .newsletter-inner h2 {
+            font-family: 'Cinzel', serif;
+            color: white;
+            font-size: 2.2em;
+            margin: 0 0 12px 0;
+            letter-spacing: 0.08em;
+        }
+        .newsletter-inner p {
+            font-family: 'Montserrat', sans-serif;
+            color: rgba(255,255,255,0.85);
+            font-size: 1em;
+            margin: 0 0 36px 0;
+            line-height: 1.7;
+        }
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-items: center;
+            width: 100%;
+        }
+        .newsletter-form input[type="text"],
+        .newsletter-form input[type="email"] {
+            width: 100%;
+            padding: 16px 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95em;
+            border: none;
+            outline: none;
+            background-color: rgba(255,255,255,0.92);
+            color: #333;
+            box-sizing: border-box;
+        }
+        .newsletter-form input[type="text"]::placeholder,
+        .newsletter-form input[type="email"]::placeholder {
+            color: #aaa;
+        }
+        .newsletter-form button {
+            width: 100%;
+            padding: 16px 36px;
+            background-color: #1a1420;
+            color: white;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9em;
+            letter-spacing: 0.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .newsletter-form button:hover {
+            background-color: #2e2338;
+        }
+
+        .staff-section {
+            padding: 100px 80px;
+            background-color: #f5f3f7;
+        }
+        .staff-section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2em;
+            color: #564666;
+            text-align: center;
+            margin: 0 0 70px 0;
+            letter-spacing: 0.08em;
+        }
+        .staff-list {
+            display: flex;
+            flex-direction: column;
+            gap: 70px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .staff-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 50px;
+        }
+        .staff-card:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .staff-photo {
+            flex: 0 0 260px;
+            height: 320px;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+        .staff-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .staff-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5em;
+            color: #2e2338;
+            margin: 0 0 6px 0;
+            letter-spacing: 0.05em;
+        }
+        .staff-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85em;
+            color: #564666;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin: 0 0 20px 0;
+        }
+        .staff-divider {
+            width: 40px;
+            height: 2px;
+            background-color: #564666;
+            margin-bottom: 20px;
+        }
+        .staff-bio {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95em;
+            color: #555;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .gallery-pin {
+            height: 300vh;
+            position: relative;
+        }
+
+        .gallery-inner {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #1a1420;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-img {
+            position: absolute;
+            border-radius: 6px;
+            overflow: hidden;
+            will-change: transform;
+        }
+
+        .gallery-img img {
+            width: 280px;
+            height: 360px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-cta {
+            position: absolute;
+            text-align: center;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .gallery-cta h2 {
+            font-family: 'Cinzel', serif;
+            color: white;
+            font-size: 2.5em;
+            margin: 0 0 24px 0;
+            letter-spacing: 0.05em;
+        }
+
+        .explore-btn {
+            display: inline-block;
+            background-color: #564666;
+            color: white;
+            padding: 18px 60px;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 1em;
+            letter-spacing: 0.1em;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .explore-btn:hover {
+            background-color: #7a5f9a;
+        }
+
+        .site-footer {
+            background-color: #1a1420;
+            color: #ccc;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .footer-map {
+            width: 100%;
+            height: 320px;
+            background-color: #2e2338;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(30%) contrast(1.1);
+        }
+        .footer-map-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: rgba(255,255,255,0.4);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9em;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .footer-map-placeholder svg {
+            opacity: 0.3;
+        }
+
+        .footer-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+            padding: 60px 80px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .footer-logo-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .footer-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8em;
+            color: white;
+            letter-spacing: 0.15em;
+            line-height: 1.1;
+        }
+        .footer-logo span {
+            display: block;
+            font-size: 0.45em;
+            letter-spacing: 0.25em;
+            color: rgba(255,255,255,0.5);
+            font-weight: 400;
+            margin-top: 4px;
+        }
+        .footer-tagline {
+            font-size: 0.8em;
+            color: rgba(255,255,255,0.45);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .footer-contact-col h4,
+        .footer-social-col h4 {
+            font-family: 'Cinzel', serif;
+            color: white;
+            font-size: 0.85em;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin: 0 0 20px 0;
+        }
+        .footer-contact-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .footer-contact-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.88em;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.5;
+        }
+        .footer-contact-list li svg {
+            flex-shrink: 0;
+            margin-top: 2px;
+            opacity: 0.7;
+        }
+        .footer-contact-list a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .footer-contact-list a:hover {
+            color: white;
+        }
+
+        .footer-social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .footer-social-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.88em;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .footer-social-link:hover {
+            color: white;
+        }
+        .footer-social-link svg {
+            opacity: 0.7;
+            flex-shrink: 0;
+        }
+
+        .footer-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 80px;
+            font-size: 0.78em;
+            color: rgba(255,255,255,0.3);
+        }
+
+    </style>
+</head>
+<body>
+    <img src="images/Gemini_Generated_Image_4zy0uy4zy0uy4zy0.png" alt="Cover Image" class="coverimg">
+    <nav class="navbar" id="main-navbar">
+        <a href="new-website.html" style="display:inline-flex;align-items:center;padding:0;"><img src="images/Asset+6.png" id="navbar-logo" alt="AWC Logo" style="width: 100px; height: auto; margin: 20px;"></a>
+        <ul class="nav-links">
+            <a href="treatments.html" class="shadow-text">TREATMENTS</a>
+            <a href="offers.html" class="shadow-text">OFFERS</a>
+            <a href="gallery.html" class="shadow-text">GALLERY</a>
+            <a href="about.html" class="shadow-text">ABOUT US</a>
+        </ul>
+        <div class="navbar-right">
+            <a href="#" class="shadow-text">610.7.BEAUTY</a>
+            <button class="shadow-text" style="background-color: #564666; color: white; border: none; padding: 10px 20px; cursor: pointer; font-family: 'Cinzel', serif;">BOOK NOW</button>
+        </div>
+        
+    </nav>
+    <img src="images/icons8-down-arrow-100.png" alt="Down Arrow" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 50px; height: auto; opacity: 0.7;">
+
+    <section style="padding: 50px; text-align: center;">
+        <h1 style="color: #2F2738; font-size: 2.5em; margin-bottom: 20px;">Welcome to AAWC</h1>
+        <p style="color: #3A3E45; font-size: 1.2em; max-width: 600px; margin: 0 auto; line-height: 1.6;">Experience the ultimate in beauty and wellness at AAWC. Our expert team is dedicated to providing you with personalized treatments that enhance your natural beauty and boost your confidence.</p>
+    </section>
+    <section style="padding: 50px; text-align: left;">
+        <div class="slide-in-bottom">
+            <img src="images/ChatGPT+Image+May+22_2C+2026+at+01_10_01+PM.png" alt="Stock ChatGPT" style="float: right; width: 100%; max-width: 800px; height: auto; margin-bottom: 20px; display: block; margin-left: auto;">
+            <h5 style="color: #2F2738; font-size: 2em; margin-bottom: 20px; font-family: 'Saira', sans-serif;">Move Better This Summer</h5>
+            <h1 style="color: #2F2738; font-size: 2.5em; margin-bottom: 20px;">Start Your Journey</h1>
+            <p style="color: #3A3E45; font-size: 1.2em; max-width: 600px; line-height: 1.6;">Feel stronger and more confident with advanced body sculpting at AAWC.</p>
+            <p style="color: #3A3E45; font-size: 1.2em; max-width: 600px; line-height: 1.6;">Featuring the latest in non-invasive technology, our treatments are designed to target stubborn fat and contour your body without surgery or downtime.</p>
+            <p style="color: #3A3E45; font-size: 1.2em; max-width: 600px; line-height: 1.6;">Whether you're looking to slim down, tone up, or simply feel your best, AAWC has the perfect solution for you. Book your consultation today and take the first step towards a more confident you.</p>
+            <div style="max-width: 600px; text-align: left;">
+                <button style="background-color: #564666; color: white; border: none; border-radius: 8px; padding: 25px 80px; cursor: pointer; font-family: 'Cinzel', serif; font-size: 1.2em;">Book Now</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero-band slide-in-bottom">
+        <img src="images/ChatGPT Image Jul 25, 2026, 11_56_09 PM.png" alt="Stock ChatGPT">
+    </section>
+
+    <section class="fade-in" style="padding: 60px 50px 20px; text-align: center;">
+        <h2 style="font-family: 'Cinzel', serif; font-weight: 700; font-size: 2.4em; color: #2F2738; margin: 0;">This is <span style="color: #564666; font-style: italic;">self-care</span> on your terms</h2>
+    </section>
+
+    <section style="padding: 50px; text-align: left;">
+        <div class="slideshow-wrapper">
+            <div class="slideshow-track">
+                <div class="mySlides">
+                    <img src="images/row-1-column-3.png" alt="Emsculpt Neo">
+                    <div class="slide-text">
+                        <a href="body-contouring.html" class="slide-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="mySlides">
+                    <img src="images/row-1-column-2.png" alt="Emsella">
+                    <div class="slide-text">
+                        <a href="vaginal-rejuvenation.html" class="slide-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="mySlides">
+                    <img src="images/row-1-column-1.png" alt="T-shape 2">
+                    <div class="slide-text">
+                        <a href="body-contouring.html" class="slide-btn">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <div class="dot-container">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+    </section>
+
+    <section class="newsletter-section">
+        <div class="newsletter-bg"></div>
+        <div class="newsletter-inner">
+            <h2>Stay in the Know</h2>
+            <p>Be the first to hear about new treatments, exclusive offers, and wellness tips delivered straight to your inbox.</p>
+            <form class="newsletter-form" onsubmit="return false;">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <button type="submit">Sign Me Up</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="staff-section">
+        <h2 class="staff-section-title">Meet the Staff</h2>
+        <div class="staff-list">
+
+            <div class="staff-card">
+                <img class="staff-photo" src="images/480610210_1164124525715499_8280883702688299265_n.jpg.webp" alt="Staff member">
+                <div class="staff-info">
+                    <h3 class="staff-name">Dr. Mike Cheng</h3>
+                    <p class="staff-title">Clinical Director</p>
+                    <div class="staff-divider"></div>
+                    <p class="staff-bio">Dr. Mike Cheng brings over 10 years of experience in aesthetic medicine and body contouring. He specializes in non-invasive treatments and is passionate about helping clients feel confident in their own skin. His gentle approach and expert technique have made him a client favorite.</p>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <img class="staff-photo" src="images/IMG_4454.JPG.webp" alt="Staff member">
+                <div class="staff-info">
+                    <h3 class="staff-name">Jessica Spears</h3>
+                    <p class="staff-title">Aesthetic Specialist</p>
+                    <div class="staff-divider"></div>
+                    <p class="staff-bio">Jessica has been practicing cosmetology with Dr. Mike Cheng for a long time. She designs personalized treatment plans that address both body and mind, ensuring each client leaves feeling restored and revitalized.</p>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <img class="staff-photo" src="images/stephanie.webp" alt="Staff member">
+                <div class="staff-info">
+                    <h3 class="staff-name">Stephanie Wang</h3>
+                    <p class="staff-title">Body Contouring Expert</p>
+                    <div class="staff-divider"></div>
+                    <p class="staff-bio">Stephanie is our resident expert in Emsculpt Neo and T-shape treatments. With a deep understanding of muscle physiology and body composition, she tailors every session to maximize results and comfort for each individual client.</p>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <img class="staff-photo" src="images/Allyson.png" alt="Staff member">
+                <div class="staff-info">
+                    <h3 class="staff-name">Allyson</h3>
+                    <p class="staff-title">Sales Manager</p>
+                    <div class="staff-divider"></div>
+                    <p class="staff-bio">Allyson leads our sales team, helping clients find the right treatment plan for their goals and budget. Her warm, straightforward approach makes it easy to ask questions and feel confident about every decision.</p>
+                </div>
+            </div>
+
+            <div class="staff-card">
+                <img class="staff-photo" src="images/Ruby.png" alt="Staff member">
+                <div class="staff-info">
+                    <h3 class="staff-name">Ruby</h3>
+                    <p class="staff-title">Assistant Aesthetician</p>
+                    <div class="staff-divider"></div>
+                    <p class="staff-bio">Ruby supports our aesthetic team with hands-on care during every treatment, making sure each client is comfortable from start to finish. She's detail-oriented and always ready to help however she can.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="gallery-pin">
+        <div class="gallery-inner">
+            <div class="gallery-img img-a">
+                <img src="images/multiple-models-posing-in-max-1882082590.jpg" alt="Emsculpt Neo">
+            </div>
+            <div class="gallery-img img-b">
+                <img src="images/one-model-posing-in-front-max-267963735.jpg" alt="Emsella">
+            </div>
+            <div class="gallery-img img-c">
+                <img src="images/one-model-posing-in-front-max-3112709138.jpg" alt="T-shape 2">
+            </div>
+            <div class="gallery-img img-d">
+                <img src="images/one-model-posing-in-front-max-457021118.jpg" alt="Treatment 4">
+            </div>
+            <div class="gallery-cta">
+                <h2>See Real Results</h2>
+                <a href="gallery.html" class="explore-btn">Go Explore</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+
+        <div class="footer-map">
+            <!-- Replace the placeholder below with a real <iframe> from Google Maps -->
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3050.5463687386914!2d-75.13106462418766!3d40.13011177148716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6b0422bb1e88f%3A0x6d551cc4ae84d084!2s1422%20Easton%20Rd%2C%20Abington%2C%20PA%2019001!5e0!3m2!1sen!2sus!4v1784682559975!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+
+        <div class="footer-body">
+
+            <div class="footer-logo-col">
+                <img src="images/Asset+6.png" alt="AAWC Logo" style="width: 140px; height: auto; object-fit: contain;">
+                <p class="footer-tagline">Empowering you to look and feel your best through cutting-edge, non-invasive treatments.</p>
+            </div>
+
+            <div class="footer-contact-col">
+                <h4>Contact Us</h4>
+                <ul class="footer-contact-list">
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                        1422 Easton Road<br>Abington, PA 19001
+                    </li>
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
+                        <a href="tel:+12153462155">(215) 346-2155</a>
+                    </li>
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <a href="mailto:support@abingtonawc.com">support@abingtonawc.com</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="footer-social-col">
+                <h4>Follow Us</h4>
+                <div class="footer-social-links">
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        Instagram
+                    </a>
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                        Facebook
+                    </a>
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+                        Twitter / X
+                    </a>
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <span>&copy; 2026 Advanced Aesthetics &amp; Wellness Center. All rights reserved.</span>
+            <span>Designed with care.</span>
+        </div>
+
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Block copy/cut and image dragging
+        document.addEventListener('copy', (e) => e.preventDefault());
+        document.addEventListener('cut', (e) => e.preventDefault());
+        document.addEventListener('dragstart', (e) => e.preventDefault());
+
+        gsap.set('.slideshow-wrapper', { opacity: 0, x: 120 });
+        gsap.set('.dot-container',     { opacity: 0, x: 80 });
+
+        ScrollTrigger.create({
+            trigger: '.slideshow-wrapper',
+            start: 'top 80%',
+            onEnter: () => {
+                gsap.to('.slideshow-wrapper', { opacity: 1, x: 0, duration: 0.9, ease: 'power3.out' });
+                gsap.to('.dot-container',     { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out', delay: 0.2 });
+            },
+            once: true,
+        });
+
+        gsap.to('.newsletter-bg', {
+            yPercent: 60,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.newsletter-section',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true,
+            }
+        });
+
+        gsap.set('.newsletter-inner h2', { opacity: 0, y: 50 });
+        gsap.set('.newsletter-inner p',  { opacity: 0, y: 40 });
+        gsap.set('.newsletter-form',     { opacity: 0, y: 40 });
+
+        ScrollTrigger.create({
+            trigger: '.newsletter-section',
+            start: 'top 75%',
+            onEnter: () => {
+                gsap.to('.newsletter-inner h2', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+                gsap.to('.newsletter-inner p',  { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.15 });
+                gsap.to('.newsletter-form',     { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.3 });
+            },
+            once: true,
+        });
+
+        const staffCards = document.querySelectorAll('.staff-card');
+        const staffDirections = [120, -120, 120, -120, 120];
+        staffCards.forEach((card, i) => {
+            gsap.set(card, { opacity: 0, x: staffDirections[i] });
+            ScrollTrigger.create({
+                trigger: card,
+                start: 'top 82%',
+                onEnter: () => {
+                    gsap.to(card, { opacity: 1, x: 0, duration: 0.85, ease: 'power3.out' });
+                },
+                once: true,
+            });
+        });
+
+        gsap.set('.gallery-img', { xPercent: -50, yPercent: -50, left: '50%', top: '50%' });
+        gsap.set('.img-a', { rotation: -8 });
+        gsap.set('.img-b', { rotation:  5 });
+        gsap.set('.img-c', { rotation: -4 });
+        gsap.set('.img-d', { rotation:  7 });
+
+        const galleryTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '.gallery-pin',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 1.5,
+            }
+        });
+
+        galleryTl
+            .to('.img-a', { top: '34%', left: '18%', rotation: -12, scale: 0.88, duration: 1 }, 0)
+            .to('.img-b', { top: '34%', left: '82%', rotation:   9, scale: 0.88, duration: 1 }, 0)
+            .to('.img-c', { top: '72%', left: '18%', rotation:  -6, scale: 0.88, duration: 1 }, 0)
+            .to('.img-d', { top: '72%', left: '82%', rotation:  10, scale: 0.88, duration: 1 }, 0)
+            .to('.gallery-cta', { opacity: 1, duration: 0.6, pointerEvents: 'auto' }, 0.6);
+
+        let slideIndex = 0;
+        const track = document.querySelector('.slideshow-track');
+        const slides = document.querySelectorAll('.mySlides');
+        const dots = document.querySelectorAll('.dot');
+        const slideWidth = 72;
+
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+
+        function goToSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= slides.length) index = slides.length - 1;
+            slideIndex = index;
+            let offset;
+            if (index === 0) {
+                offset = 0;
+            } else if (index === slides.length - 1) {
+                offset = -(slides.length * slideWidth - 100);
+            } else {
+                offset = -(index * slideWidth) + (50 - slideWidth / 2);
+            }
+            track.style.transform = 'translateX(' + offset + '%)';
+            slides.forEach(s => s.classList.remove('active-slide'));
+            dots.forEach(d => d.classList.remove('active'));
+            slides[slideIndex].classList.add('active-slide');
+            dots[slideIndex].classList.add('active');
+            prevBtn.style.display = (index === 0) ? 'none' : 'block';
+            nextBtn.style.display = (index === slides.length - 1) ? 'none' : 'block';
+        }
+
+        function plusSlides(n) {
+            goToSlide(slideIndex + n);
+        }
+
+        function currentSlide(n) {
+            goToSlide(n - 1);
+        }
+
+        goToSlide(0);
+
+        const logo = document.getElementById('navbar-logo');
+        const scrolledLogoSrc = 'images/Asset+3.png.webp';
+        const defaultLogoSrc = 'images/Asset+6.png';
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.slide-in-bottom, .fade-in').forEach(el => observer.observe(el));
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('main-navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbarscroll');
+                logo.src = scrolledLogoSrc;
+            } else {
+                navbar.classList.remove('navbarscroll');
+                logo.src = defaultLogoSrc;
+            }
+        });
+    </script>
+</body>
+</html>

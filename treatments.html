@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treatments — AAWC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Montserrat:wght@400;600&family=Saira:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+            font-family: 'Cinzel', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #E9E7EC;
+        }
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        img {
+            -webkit-user-drag: none;
+            pointer-events: auto;
+        }
+
+        p { font-family: 'Montserrat', sans-serif; }
+
+        /* ── Navbar ── */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            padding: 7px 20px;
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+        }
+        .navbarscroll { background-color: #E9E7EC; }
+        .navbar.navbarscroll a { color: #2F2738; text-shadow: none; }
+
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0; margin: 0;
+        }
+        .navbar a {
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            color: #E9E7EC;
+            font-weight: bold;
+            padding: 8px 16px;
+        }
+        .navbar a.active-page {
+            color: #c4a8e0;
+            position: relative;
+        }
+        .navbar a.active-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 16px;
+            right: 16px;
+            height: 2px;
+            background-color: #c4a8e0;
+            border-radius: 1px;
+        }
+        .navbar.navbarscroll a.active-page { color: #564666; }
+        .navbar.navbarscroll a.active-page::before { background-color: #564666; }
+        .navbar-right {
+            margin-left: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .navbar-right a { padding: 0; font-size: 0.85em; }
+
+        /* ── Hero ── */
+        .treatments-hero {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+            margin-bottom: 60px;
+            overflow: hidden;
+        }
+        .treatments-hero-darken {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 55%, rgba(0,0,0,0.65) 100%);
+            pointer-events: none;
+        }
+        .treatments-hero-bg-fill {
+            position: absolute;
+            inset: 0;
+            background-image: url('images/pale-background-pro-808184480.jpg');
+            background-size: 665% 100%;
+            background-repeat: no-repeat;
+            background-position: 100% center;
+            filter: brightness(0.55);
+        }
+        .treatments-hero-bg-flip {
+            position: absolute;
+            inset: 0;
+            transform: scaleX(-1);
+        }
+        .treatments-hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('images/pale-background-pro-808184480.jpg');
+            background-size: 65%;
+            background-repeat: no-repeat;
+            background-position: 0% 12%;
+            filter: brightness(0.55);
+            -webkit-mask-image: linear-gradient(to right, black 0%, black 58%, transparent 68%);
+            mask-image: linear-gradient(to right, black 0%, black 58%, transparent 68%);
+        }
+        .treatments-hero-content {
+            position: absolute;
+            left: 80px;
+            right: 80px;
+            bottom: 4%;
+            z-index: 1;
+        }
+        .treatments-hero h1 {
+            font-family: 'Cinzel', serif;
+            color: white;
+            font-size: 3.2em;
+            margin: 0;
+            letter-spacing: 0.08em;
+            text-shadow: 2px 2px 12px rgba(0,0,0,0.5);
+        }
+
+        /* ── Intro strip ── */
+        .treatments-intro {
+            background-color: #E9E7EC;
+            text-align: center;
+            padding: 40px 80px;
+        }
+        .treatments-intro p {
+            color: #564666;
+            font-size: 0.95em;
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 2.0;
+            letter-spacing: 0.02em;
+        }
+
+        /* ── Treatment cards ── */
+        .treatments-section {
+            padding: 80px;
+        }
+        .treatments-section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.78em;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: #564666;
+            margin: 0 0 60px 0;
+        }
+
+        .offers-row {
+            display: flex;
+        }
+
+        .offer-box {
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            min-height: 380px;
+            padding: 60px 40px;
+            text-align: center;
+            text-decoration: none;
+            background-color: transparent;
+            transition: background-color 0.3s ease;
+        }
+
+        .offer-box:hover {
+            background-color: rgba(0, 0, 0, 0.06);
+        }
+
+        .offer-box:first-child {
+            border-right: 1px solid #564666;
+        }
+
+        .offer-box-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8em;
+            font-weight: 500;
+            color: #2e2338;
+            letter-spacing: 0.05em;
+        }
+
+        .offer-box-link {
+            display: inline-block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8em;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: white;
+            background-color: #564666;
+            padding: 14px 36px;
+            border-radius: 30px;
+        }
+
+        /* ── CTA Banner ── */
+        .treatments-cta {
+            position: relative;
+            height: 560px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+        .treatments-cta-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('images/ChatGPT Image Jul 26, 2026, 06_15_45 PM.png');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.35) saturate(1.2) contrast(1.1);
+        }
+        .treatments-cta-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 60px;
+            width: 100%;
+            padding: 0 100px;
+        }
+        .treatments-cta-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.15;
+        }
+        .treatments-cta-title-main {
+            font-size: 3.4em;
+            letter-spacing: 0.06em;
+        }
+        .treatments-cta-title-sub {
+            font-size: 1.25em;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+        }
+        .treatments-cta-right {
+            max-width: 480px;
+            text-align: left;
+        }
+        .treatments-cta-right p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95em;
+            font-weight: 700;
+            line-height: 1.9;
+            margin: 0 0 28px 0;
+        }
+        .treatments-cta-actions {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .treatments-cta-phone {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            color: white;
+            font-size: 0.95em;
+            letter-spacing: 0.05em;
+        }
+        .treatments-cta-btn {
+            display: inline-block;
+            background-color: transparent;
+            border: 3px solid #6E5A54;
+            color: white;
+            padding: 16px 40px;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.85em;
+            letter-spacing: 0.08em;
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
+        }
+        .treatments-cta-btn:hover {
+            background-color: rgba(110, 90, 84, 0.25);
+        }
+
+        /* ── Footer ── */
+        .site-footer { background-color: #1a1420; color: #ccc; font-family: 'Montserrat', sans-serif; }
+        .footer-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+            padding: 60px 80px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .footer-logo-col { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+        .footer-tagline { font-size: 0.8em; color: rgba(255,255,255,0.45); line-height: 1.8; margin: 0; }
+        .footer-contact-col h4, .footer-social-col h4 {
+            font-family: 'Cinzel', serif; color: white;
+            font-size: 0.85em; letter-spacing: 0.15em;
+            text-transform: uppercase; margin: 0 0 20px 0;
+        }
+        .footer-contact-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+        .footer-contact-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.88em; color: rgba(255,255,255,0.6); line-height: 1.7; }
+        .footer-contact-list li svg { flex-shrink: 0; margin-top: 2px; opacity: 0.7; }
+        .footer-contact-list a { color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+        .footer-contact-list a:hover { color: white; }
+        .footer-social-links { display: flex; flex-direction: column; gap: 12px; }
+        .footer-social-link { display: flex; align-items: center; gap: 12px; font-size: 0.88em; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+        .footer-social-link:hover { color: white; }
+        .footer-social-link svg { opacity: 0.7; flex-shrink: 0; }
+        .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 20px 80px; font-size: 0.78em; color: rgba(255,255,255,0.3); }
+        .shadow-text { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="main-navbar">
+        <a href="new-website.html" style="display:inline-flex;align-items:center;padding:0;"><img src="images/Asset+6.png" id="navbar-logo" alt="AWC Logo" style="width: 100px; height: auto; margin: 20px;"></a>
+        <ul class="nav-links">
+            <a href="treatments.html" class="shadow-text active-page">TREATMENTS</a>
+            <a href="offers.html" class="shadow-text">OFFERS</a>
+            <a href="gallery.html" class="shadow-text">GALLERY</a>
+            <a href="about.html" class="shadow-text">ABOUT US</a>
+        </ul>
+        <div class="navbar-right">
+            <a href="#" class="shadow-text">610.7.BEAUTY</a>
+            <button class="shadow-text" style="background-color: #564666; color: white; border: none; padding: 10px 20px; cursor: pointer; font-family: 'Cinzel', serif;">BOOK NOW</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="treatments-hero">
+        <div class="treatments-hero-bg-fill"></div>
+        <div class="treatments-hero-bg-flip">
+            <div class="treatments-hero-bg"></div>
+        </div>
+        <div class="treatments-hero-darken"></div>
+        <div class="treatments-hero-content">
+            <h1>Our Treatments</h1>
+        </div>
+    </div>
+
+    <!-- Intro -->
+    <div class="treatments-intro">
+        <p>At AAWC, every treatment is backed by science and delivered with care. Our team of specialists will guide you to the right solution for your body and your goals — no surgery, no downtime.</p>
+    </div>
+
+    <!-- Treatment Cards -->
+    <section class="treatments-section">
+
+        <div class="offers-row">
+            <a href="body-contouring.html" class="offer-box">
+                <span class="offer-box-title">Body Contouring</span>
+                <span class="offer-box-link">Learn More</span>
+            </a>
+            <a href="vaginal-rejuvenation.html" class="offer-box">
+                <span class="offer-box-title">Vaginal Rejuvenation</span>
+                <span class="offer-box-link">Learn More</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <div class="treatments-cta">
+        <div class="treatments-cta-bg"></div>
+        <div class="treatments-cta-content">
+            <h2 class="treatments-cta-title">
+                <span class="treatments-cta-title-main">Refresh</span>
+                <span class="treatments-cta-title-sub">your routine</span>
+            </h2>
+            <div class="treatments-cta-right">
+                <p>Self-care should never feel complicated. We make it easy to achieve natural, polished results with exceptional care that gets you. Book your appointment today and experience aesthetics done right.</p>
+                <div class="treatments-cta-actions">
+                    <a href="#" class="treatments-cta-btn">Book Appointment Now</a>
+                    <span class="treatments-cta-phone">610.7.BEAUTY</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-body">
+            <div class="footer-logo-col">
+                <img src="images/Asset+6.png" alt="AAWC Logo" style="width: 140px; height: auto; object-fit: contain;">
+                <p class="footer-tagline">Empowering you to look and feel your best through cutting-edge, non-invasive treatments.</p>
+            </div>
+            <div class="footer-contact-col">
+                <h4>Contact Us</h4>
+                <ul class="footer-contact-list">
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                        1422 Easton Road<br>Abington, PA 19001
+                    </li>
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
+                        <a href="tel:+12153462155">(215) 346-2155</a>
+                    </li>
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <a href="mailto:support@abingtonawc.com">support@abingtonawc.com</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer-social-col">
+                <h4>Follow Us</h4>
+                <div class="footer-social-links">
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        Instagram
+                    </a>
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                        Facebook
+                    </a>
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+                        Twitter / X
+                    </a>
+                    <a href="#" class="footer-social-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Advanced Aesthetics &amp; Wellness Center. All rights reserved.</span>
+            <span>Designed with care.</span>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Block copy/cut and image dragging
+        document.addEventListener('copy', (e) => e.preventDefault());
+        document.addEventListener('cut', (e) => e.preventDefault());
+        document.addEventListener('dragstart', (e) => e.preventDefault());
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('main-navbar');
+        const navLogo = document.getElementById('navbar-logo');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY > 50;
+            navbar.classList.toggle('navbarscroll', scrolled);
+            navLogo.src = scrolled ? 'images/Asset+3.png.webp' : 'images/Asset+6.png';
+        });
+
+        // Hero intro zoom (big to small settle)
+        gsap.from('.treatments-hero-bg-fill', {
+            scale: 1.15,
+            duration: 1.3,
+            ease: 'power2.out',
+        });
+        gsap.from('.treatments-hero-bg', {
+            scale: 1.15,
+            duration: 1.3,
+            ease: 'power2.out',
+        });
+
+        // Hero parallax
+        gsap.to('.treatments-hero-bg', {
+            yPercent: 20,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.treatments-hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true,
+            }
+        });
+
+        // Intro fade in after hero
+        gsap.set('.treatments-intro', { opacity: 0, y: 20 });
+        ScrollTrigger.create({
+            trigger: '.treatments-intro',
+            start: 'top 90%',
+            onEnter: () => {
+                gsap.to('.treatments-intro', { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' });
+            },
+            once: true,
+        });
+
+        // Offer boxes fade in, Body Contouring before Vaginal Rejuvenation
+        document.querySelectorAll('.offer-box').forEach((card, i) => {
+            gsap.set(card, { opacity: 0 });
+            ScrollTrigger.create({
+                trigger: card,
+                start: 'top 82%',
+                onEnter: () => {
+                    gsap.to(card, { opacity: 1, duration: 0.8, delay: i * 0.35, ease: 'power2.out' });
+                },
+                once: true,
+            });
+        });
+
+        // CTA banner fade in
+        gsap.set('.treatments-cta', { opacity: 0 });
+        ScrollTrigger.create({
+            trigger: '.treatments-cta',
+            start: 'top 85%',
+            onEnter: () => {
+                gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
+            },
+            once: true,
+        });
+    </script>
+</body>
+</html>

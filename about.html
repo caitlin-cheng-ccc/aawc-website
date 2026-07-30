@@ -168,6 +168,9 @@
             margin: 0 0 60px 0;
             text-align: center;
         }
+        .visit-title {
+            font-weight: 700;
+        }
 
         /* ── Our Mission ── */
         .benefits-block {
@@ -296,10 +299,70 @@
             margin: 0;
         }
 
+        /* ── Visit Us ── */
+        .visit-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: stretch;
+            width: 100%;
+        }
+        .visit-map {
+            height: 100%;
+            min-height: 380px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .visit-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(20%) contrast(1.05);
+        }
+        .visit-info-box {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 28px;
+        }
+        .visit-info-box .visit-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1.6em;
+            letter-spacing: 0.05em;
+            color: #2e2338;
+            margin: 0;
+        }
+        .visit-info-item h4 {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8em;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #564666;
+            margin: 0 0 8px 0;
+        }
+        .visit-info-item p {
+            font-family: 'Montserrat', sans-serif;
+            color: #555;
+            font-size: 0.98em;
+            line-height: 1.7;
+            margin: 0;
+        }
+        .visit-info-item a {
+            color: #555;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .visit-info-item a:hover { color: #564666; }
+
         /* ── CTA Banner ── */
         .treatments-cta {
             position: relative;
-            height: 480px;
+            padding: 60px 0;
             display: flex;
             align-items: center;
             overflow: hidden;
@@ -307,7 +370,7 @@
         .treatments-cta-bg {
             position: absolute;
             inset: 0;
-            background-image: url('images/ChatGPT Image Jul 26, 2026, 06_15_45 PM.png');
+            background-image: url('images/wp9019550-purple-4k-pc-wallpapers.jpg');
             background-size: cover;
             background-position: center;
             filter: brightness(0.35) saturate(1.2) contrast(1.1);
@@ -315,30 +378,47 @@
         .treatments-cta-content {
             position: relative;
             z-index: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 60px;
             width: 100%;
-            text-align: center;
-            padding: 0 60px;
+            padding: 0 100px;
         }
-        .treatments-cta h2 {
+        .treatments-cta-title {
             font-family: 'Cinzel', serif;
             font-weight: 700;
             color: white;
-            font-size: 2.3em;
-            margin: 0 0 16px 0;
-            letter-spacing: 0.05em;
+            margin: 0;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.15;
         }
-        .treatments-cta p {
+        .treatments-cta-title-main {
+            font-size: 3.4em;
+            letter-spacing: 0.06em;
+        }
+        .treatments-cta-title-sub {
+            font-size: 1.25em;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+        }
+        .treatments-cta-right {
+            max-width: 480px;
+            text-align: left;
+        }
+        .treatments-cta-right p {
             color: rgba(255,255,255,0.8);
             font-size: 0.95em;
             font-weight: 700;
-            max-width: 560px;
-            margin: 0 auto 30px auto;
             line-height: 1.9;
+            margin: 0 0 28px 0;
         }
         .treatments-cta-actions {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 28px;
         }
         .treatments-cta-phone {
@@ -367,31 +447,31 @@
         }
 
         /* ── Footer ── */
-        .site-footer { background-color: #1a1420; color: #ccc; font-family: 'Montserrat', sans-serif; }
+        .site-footer { background-color: #ffffff; color: #1a1420; font-family: 'Montserrat', sans-serif; }
         .footer-body {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 40px;
             padding: 60px 80px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(26,20,32,0.12);
         }
         .footer-logo-col { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
-        .footer-tagline { font-size: 0.8em; color: rgba(255,255,255,0.45); line-height: 1.8; margin: 0; }
+        .footer-tagline { font-size: 0.8em; color: rgba(26,20,32,0.6); line-height: 1.8; margin: 0; }
         .footer-contact-col h4, .footer-social-col h4 {
-            font-family: 'Cinzel', serif; color: white;
+            font-family: 'Cinzel', serif; color: #1a1420;
             font-size: 0.85em; letter-spacing: 0.15em;
             text-transform: uppercase; margin: 0 0 20px 0;
         }
         .footer-contact-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
-        .footer-contact-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.88em; color: rgba(255,255,255,0.6); line-height: 1.7; }
+        .footer-contact-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.88em; color: rgba(26,20,32,0.75); line-height: 1.7; }
         .footer-contact-list li svg { flex-shrink: 0; margin-top: 2px; opacity: 0.7; }
-        .footer-contact-list a { color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
-        .footer-contact-list a:hover { color: white; }
+        .footer-contact-list a { color: rgba(26,20,32,0.75); text-decoration: none; transition: color 0.2s; }
+        .footer-contact-list a:hover { color: #1a1420; }
         .footer-social-links { display: flex; flex-direction: column; gap: 12px; }
-        .footer-social-link { display: flex; align-items: center; gap: 12px; font-size: 0.88em; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
-        .footer-social-link:hover { color: white; }
+        .footer-social-link { display: flex; align-items: center; gap: 12px; font-size: 0.88em; color: rgba(26,20,32,0.75); text-decoration: none; transition: color 0.2s; }
+        .footer-social-link:hover { color: #1a1420; }
         .footer-social-link svg { opacity: 0.7; flex-shrink: 0; }
-        .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 20px 80px; font-size: 0.78em; color: rgba(255,255,255,0.3); }
+        .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 20px 80px; font-size: 0.78em; color: rgba(26,20,32,0.5); }
         .shadow-text { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
     </style>
 </head>
@@ -498,15 +578,44 @@
         </div>
     </section>
 
+    <!-- Visit Us -->
+    <section class="treatments-section" style="padding-top: 70px;">
+        <div class="visit-block">
+            <div class="visit-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3050.5463687386914!2d-75.13106462418766!3d40.13011177148716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6b0422bb1e88f%3A0x6d551cc4ae84d084!2s1422%20Easton%20Rd%2C%20Abington%2C%20PA%2019001!5e0!3m2!1sen!2sus!4v1784682559975!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            <div class="visit-info-box">
+                <h2 class="visit-title">Reach Out Today</h2>
+                <div class="visit-info-item">
+                    <h4>Hours</h4>
+                    <p>Mon: 9am – 6pm<br>Tue: Closed<br>Wed–Fri: 9am – 6pm<br>Sat: 10am – 4pm<br>Sun: Closed</p>
+                </div>
+                <div class="visit-info-item">
+                    <h4>Address</h4>
+                    <p>1422 Easton Road<br>Abington, PA 19001</p>
+                </div>
+                <div class="visit-info-item">
+                    <h4>Phone</h4>
+                    <p><a href="tel:+12153462155">(215) 346-2155</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Banner -->
     <div class="treatments-cta">
         <div class="treatments-cta-bg"></div>
         <div class="treatments-cta-content">
-            <h2>Ready to Meet Your Goals? — In Abington, PA</h2>
-            <p>Schedule a consultation with our team and find out which treatment plan is right for you.</p>
-            <div class="treatments-cta-actions">
-                <a href="#" class="treatments-cta-btn">Schedule a Consultation</a>
-                <span class="treatments-cta-phone">610.7.BEAUTY</span>
+            <h2 class="treatments-cta-title">
+                <span class="treatments-cta-title-main">Meet</span>
+                <span class="treatments-cta-title-sub">your goals</span>
+            </h2>
+            <div class="treatments-cta-right">
+                <p>Schedule a consultation with our team and find out which treatment plan is right for you.</p>
+                <div class="treatments-cta-actions">
+                    <a href="#" class="treatments-cta-btn">Schedule a Consultation</a>
+                    <span class="treatments-cta-phone">610.7.BEAUTY</span>
+                </div>
             </div>
         </div>
     </div>
@@ -515,7 +624,7 @@
     <footer class="site-footer">
         <div class="footer-body">
             <div class="footer-logo-col">
-                <img src="images/Asset+6.png" alt="AAWC Logo" style="width: 140px; height: auto; object-fit: contain;">
+                <img src="images/Asset+3.png.webp" alt="AAWC Logo" style="width: 140px; height: auto; object-fit: contain;">
                 <p class="footer-tagline">Empowering you to look and feel your best through cutting-edge, non-invasive treatments.</p>
             </div>
             <div class="footer-contact-col">
@@ -660,6 +769,17 @@
                 },
                 once: true,
             });
+        });
+
+        // Visit Us map fade in
+        gsap.set(['.visit-map', '.visit-info-box'], { opacity: 0, y: 20 });
+        ScrollTrigger.create({
+            trigger: '.visit-block',
+            start: 'top 85%',
+            onEnter: () => {
+                gsap.to(['.visit-map', '.visit-info-box'], { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.15 });
+            },
+            once: true,
         });
 
         // CTA banner fade in

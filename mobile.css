@@ -1,0 +1,194 @@
+/* ============================================================
+   Mobile responsiveness — shared across all pages.
+   Loaded after each page's inline <style> block so these rules
+   win on selector-equal specificity.
+   ============================================================ */
+
+/* Safety net: never allow horizontal scroll from a stray fixed-width element */
+html, body { overflow-x: hidden; }
+
+/* ---------- Hamburger toggle button ---------- */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1100;
+}
+.nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: #E9E7EC;
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+}
+.navbar.navbarscroll .nav-toggle span,
+.nav-toggle.nav-open span { background-color: #2F2738; }
+.nav-toggle.nav-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.nav-open span:nth-child(2) { opacity: 0; }
+.nav-toggle.nav-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ============================================================
+   Breakpoint: tablet and below — collapse nav, loosen big paddings
+   ============================================================ */
+@media (max-width: 880px) {
+    /* Pinned to the navbar's right edge so it's always reachable even if
+       the phone-number/book-now content on its left runs long. */
+    .nav-toggle {
+        display: flex;
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+    }
+
+    .navbar { padding: 6px 60px 6px 12px; }
+    #navbar-logo { width: 64px !important; margin: 8px !important; }
+
+    .nav-links {
+        box-sizing: border-box;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        left: auto;
+        transform: none;
+        width: min(78vw, 320px);
+        height: 100vh;
+        margin: 0;
+        padding: 100px 32px 40px;
+        background-color: #E9E7EC;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        box-shadow: -8px 0 30px rgba(0,0,0,0.15);
+        transition: right 0.35s ease;
+        overflow-y: auto;
+    }
+    .nav-links.nav-open { right: 0; }
+    .nav-links a {
+        color: #2F2738 !important;
+        text-shadow: none !important;
+        width: 100%;
+        padding: 14px 4px;
+        font-size: 1.05em;
+        border-bottom: 1px solid rgba(47,39,56,0.1);
+    }
+    .nav-links a.active-page::before { display: none; }
+
+    .nav-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0,0,0,0.4);
+        z-index: 999;
+    }
+    .nav-backdrop.nav-open { display: block; }
+
+    .navbar-right { flex-direction: row; gap: 8px; }
+    .navbar-right a { font-size: 0.62em; }
+    .navbar-right button { padding: 6px 12px !important; font-size: 0.72em; white-space: nowrap; }
+
+    /* Shared section paddings used across every page */
+    .treatments-hero-content { left: 24px; right: 24px; }
+    .treatments-hero h1 { font-size: 2.1em; }
+    .treatments-intro { padding: 32px 24px; }
+    .treatments-section { padding: 56px 24px; }
+    .treatments-section-title { font-size: 1.5em; margin-bottom: 36px; }
+    .staff-section { padding: 60px 24px; }
+    .authority-section { padding: 50px 24px 0; }
+    .combined-section { padding: 70px 24px; }
+    .faq-section { padding: 50px 24px; }
+    .cherry-widget-section { padding: 40px 24px 56px; }
+
+    /* Two/three column grids -> single column */
+    .benefits-block,
+    .visit-block,
+    .treatment-block,
+    .cherry-block,
+    .combined-reasons {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+        direction: ltr !important;
+    }
+    .treatment-block:nth-child(even) > *,
+    .cherry-block:nth-child(even) > * { direction: ltr !important; }
+    .benefits-block-img-frame { max-width: 100% !important; height: 280px !important; }
+    .treatment-block-img--matched { height: 280px !important; }
+
+    /* Staff cards stack instead of alternating rows */
+    .staff-card,
+    .staff-card:nth-child(even) {
+        flex-direction: column !important;
+        gap: 20px;
+        text-align: center;
+    }
+    .staff-photo { flex: none; width: 100%; max-width: 260px; height: 280px; margin: 0 auto; }
+    .staff-info { align-items: center; }
+
+    /* Footer */
+    .footer-body { grid-template-columns: 1fr !important; padding: 40px 24px; text-align: center; }
+    .footer-logo-col { align-items: center; }
+    .footer-bottom { flex-direction: column; gap: 8px; padding: 18px 24px; text-align: center; }
+    .footer-map { height: 220px; }
+
+    /* CTA banners */
+    .treatments-cta { height: auto !important; padding: 50px 0 !important; }
+    .treatments-cta-content {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center;
+        padding: 0 24px !important;
+        gap: 28px !important;
+    }
+    .treatments-cta-right { text-align: center; max-width: 100%; }
+    .treatments-cta-title-main { font-size: 2.2em !important; }
+    .treatments-cta-actions { flex-direction: column; gap: 16px !important; }
+
+    /* Gallery grid */
+    .gallery-photo-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 14px; }
+    .gallery-grid-photo { height: 240px !important; }
+    .gallery-tabs { gap: 24px; flex-wrap: wrap; }
+
+    /* Offer boxes (treatments.html) */
+    .offers-row { flex-direction: column; }
+    .offer-box { padding: 40px 24px !important; min-height: unset !important; }
+    .offer-box:first-child { border-right: none !important; border-bottom: 1px solid #564666; }
+
+    /* Urinary incontinence stats/steps */
+    .stats-row { flex-wrap: wrap; gap: 40px !important; }
+    .step-item { padding: 20px !important; }
+}
+
+/* ============================================================
+   Breakpoint: index.html-specific components
+   ============================================================ */
+@media (max-width: 880px) {
+    .row img { width: 100%; height: auto; max-width: 400px; }
+    .hero-band { padding: 30px 5%; }
+    .hero-band img { height: 320px; }
+    .mySlides { flex: 0 0 88%; }
+    .mySlides img { height: 340px; }
+    .newsletter-section { padding: 60px 24px; }
+    .staff-list { max-width: 100%; }
+    .gallery-img img { width: 160px; height: 210px; }
+    .gallery-cta h2 { font-size: 1.6em; }
+    section[style*="padding: 50px"] { padding: 40px 20px !important; }
+}
+
+/* ============================================================
+   Breakpoint: small phones
+   ============================================================ */
+@media (max-width: 480px) {
+    .treatments-hero h1 { font-size: 1.6em; }
+    .treatments-cta-title-main { font-size: 1.8em !important; }
+    .gallery-photo-grid { grid-template-columns: 1fr !important; }
+    .staff-photo { height: 240px; }
+    .navbar-right button { padding: 7px 12px !important; font-size: 0.75em; }
+}

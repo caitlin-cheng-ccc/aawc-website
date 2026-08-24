@@ -643,9 +643,11 @@
         }
 
     </style>
+    <link rel="stylesheet" href="mobile.css">
+    <script src="mobile.js" defer></script>
 </head>
 <body>
-    <img src="images/Gemini_Generated_Image_4zy0uy4zy0uy4zy0.png" alt="Cover Image" class="coverimg">
+    <img src="images/ChatGPT Image Aug 24, 2026, 11_08_14 AM.png" alt="Cover Image" class="coverimg">
     <nav class="navbar" id="main-navbar">
         <a href="index.html" style="display:inline-flex;align-items:center;padding:0;"><img src="images/Asset+6.png" id="navbar-logo" alt="AWC Logo" style="width: 100px; height: auto; margin: 20px;"></a>
         <ul class="nav-links">
@@ -656,10 +658,13 @@
         </ul>
         <div class="navbar-right">
             <a href="#" class="shadow-text">610.7.BEAUTY</a>
-            <button class="shadow-text" style="background-color: #564666; color: white; border: none; padding: 10px 20px; cursor: pointer; font-family: 'Cinzel', serif;">BOOK NOW</button>
+            <button class="shadow-text" onclick="window.location.href='tel:+12153462155'" style="background-color: #564666; color: white; border: none; padding: 10px 20px; cursor: pointer; font-family: 'Cinzel', serif;">BOOK NOW</button>
         </div>
-        
+        <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
     </nav>
+    <div class="nav-backdrop"></div>
     <img src="images/icons8-down-arrow-100.png" alt="Down Arrow" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 50px; height: auto; opacity: 0.7;">
 
     <section style="padding: 50px; text-align: center;">
@@ -675,7 +680,7 @@
             <p style="color: #3A3E45; font-size: 1.2em; max-width: 600px; line-height: 1.6;">Featuring the latest in non-invasive technology, our treatments are designed to target stubborn fat and contour your body without surgery or downtime.</p>
             <p style="color: #3A3E45; font-size: 1.2em; max-width: 600px; line-height: 1.6;">Whether you're looking to slim down, tone up, or simply feel your best, AAWC has the perfect solution for you. Book your consultation today and take the first step towards a more confident you.</p>
             <div style="max-width: 600px; text-align: left;">
-                <button style="background-color: #564666; color: white; border: none; border-radius: 8px; padding: 25px 80px; cursor: pointer; font-family: 'Cinzel', serif; font-size: 1.2em;">Book Now</button>
+                <button onclick="window.location.href='tel:+12153462155'" style="background-color: #564666; color: white; border: none; border-radius: 8px; padding: 25px 80px; cursor: pointer; font-family: 'Cinzel', serif; font-size: 1.2em;">Book Now</button>
             </div>
         </div>
     </section>
@@ -700,7 +705,7 @@
                 <div class="mySlides">
                     <img src="images/row-1-column-2.png" alt="Emsella">
                     <div class="slide-text">
-                        <a href="vaginal-rejuvenation.html" class="slide-btn">Learn More</a>
+                        <a href="urinary-incontinence.html" class="slide-btn">Learn More</a>
                     </div>
                 </div>
                 <div class="mySlides">
@@ -725,9 +730,9 @@
         <div class="newsletter-inner">
             <h2>Stay in the Know</h2>
             <p>Be the first to hear about new treatments, exclusive offers, and wellness tips delivered straight to your inbox.</p>
-            <form class="newsletter-form" onsubmit="return false;">
-                <input type="text" placeholder="Full Name" required>
-                <input type="email" placeholder="Email Address" required>
+            <form class="newsletter-form" onsubmit="return subscribeNewsletter(this);">
+                <input type="text" name="fullName" placeholder="Full Name" required>
+                <input type="email" name="email" placeholder="Email Address" required>
                 <button type="submit">Sign Me Up</button>
             </form>
         </div>
@@ -761,7 +766,7 @@
                 <img class="staff-photo" src="images/stephanie.webp" alt="Staff member">
                 <div class="staff-info">
                     <h3 class="staff-name">Stephanie Wang</h3>
-                    <p class="staff-title">Body Contouring Expert</p>
+                    <p class="staff-title">Aesthetic Technician</p>
                     <div class="staff-divider"></div>
                     <p class="staff-bio">Stephanie is our resident expert in Emsculpt Neo and T-shape treatments. With a deep understanding of muscle physiology and body composition, she tailors every session to maximize results and comfort for each individual client.</p>
                 </div>
@@ -771,12 +776,13 @@
                 <img class="staff-photo" src="images/Allyson.png" alt="Staff member">
                 <div class="staff-info">
                     <h3 class="staff-name">Allyson</h3>
-                    <p class="staff-title">Sales Manager</p>
+                    <p class="staff-title">Aesthetic Consultant</p>
                     <div class="staff-divider"></div>
                     <p class="staff-bio">Allyson leads our sales team, helping clients find the right treatment plan for their goals and budget. Her warm, straightforward approach makes it easy to ask questions and feel confident about every decision.</p>
                 </div>
             </div>
 
+            <!--
             <div class="staff-card">
                 <img class="staff-photo" src="images/Ruby.png" alt="Staff member">
                 <div class="staff-info">
@@ -786,7 +792,7 @@
                     <p class="staff-bio">Ruby supports our aesthetic team with hands-on care during every treatment, making sure each client is comfortable from start to finish. She's detail-oriented and always ready to help however she can.</p>
                 </div>
             </div>
-
+        -->
         </div>
     </section>
 
@@ -875,6 +881,15 @@
     </footer>
 
     <script>
+        function subscribeNewsletter(form) {
+            const name = form.fullName.value;
+            const email = form.email.value;
+            const subject = 'Newsletter Signup';
+            const body = `Name: ${name}\nEmail: ${email}`;
+            window.location.href = `mailto:support@abingtonawc.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            return false;
+        }
+
         gsap.registerPlugin(ScrollTrigger);
 
         // Block copy/cut and image dragging

@@ -175,9 +175,9 @@ html, body { overflow-x: clip; }
 @media (max-width: 880px) {
     .row img { width: 100%; height: auto; max-width: 400px; }
     .hero-band { padding: 30px 5%; }
-    .hero-band img { height: 320px; }
+    .hero-band img { height: auto; aspect-ratio: 1672 / 941; object-fit: contain; }
     .mySlides { flex: 0 0 88%; }
-    .mySlides img { height: 340px; }
+    .mySlides img { height: auto; aspect-ratio: 1672 / 941; object-fit: contain; }
     .newsletter-section { padding: 60px 24px; }
     .staff-list { max-width: 100%; }
     .gallery-img img { width: 160px; height: 210px; }

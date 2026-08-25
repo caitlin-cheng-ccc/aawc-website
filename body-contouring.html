@@ -788,8 +788,8 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
@@ -837,65 +837,70 @@
             once: true,
         });
 
-        // Benefits image shifts within its fixed-size frame as the page scrolls
-        gsap.fromTo('.benefits-block-img',
-            { y: -70 },
-            {
-                y: 70,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '.benefits-block-img-frame',
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: true,
+        // Everything below is off-screen at load, so its setup is pushed off the
+        // critical first-paint/first-scroll path and onto the browser's idle time.
+        const scheduleIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+        scheduleIdle(() => {
+            // Benefits image shifts within its fixed-size frame as the page scrolls
+            gsap.fromTo('.benefits-block-img',
+                { y: -70 },
+                {
+                    y: 70,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '.benefits-block-img-frame',
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: true,
+                    }
                 }
-            }
-        );
+            );
 
-        // Underline draws in under the "Why Choose Body Contouring" heading
-        gsap.set('.benefits-heading-underline', { scaleX: 0 });
-        ScrollTrigger.create({
-            trigger: '.benefits-copy-heading',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to('.benefits-heading-underline', { scaleX: 1, duration: 0.7, ease: 'power2.out', delay: 0.2 });
-            },
-            once: true,
-        });
-
-        // Treatment blocks: image + header first, then paragraph after a short interval
-        document.querySelectorAll('.treatment-block').forEach((block) => {
-            const img = block.querySelector('.treatment-block-img');
-            const tag = block.querySelector('.treatment-block-tag');
-            const name = block.querySelector('.treatment-block-name');
-            const para = block.querySelector('.treatment-block-body p');
-            gsap.set([img, tag, name, para], { opacity: 0, y: 30 });
-            const blockTl = gsap.timeline({
-                scrollTrigger: { trigger: block, start: 'top 85%', once: true }
+            // Underline draws in under the "Why Choose Body Contouring" heading
+            gsap.set('.benefits-heading-underline', { scaleX: 0 });
+            ScrollTrigger.create({
+                trigger: '.benefits-copy-heading',
+                start: 'top 85%',
+                onEnter: () => {
+                    gsap.to('.benefits-heading-underline', { scaleX: 1, duration: 0.7, ease: 'power2.out', delay: 0.2 });
+                },
+                once: true,
             });
-            blockTl
-                .to([img, tag, name], { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' })
-                .to(para, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '+=0.3');
-        });
 
-        // Combined section header, then body paragraph after a short interval
-        gsap.set(['.combined-tag', '.combined-heading', '.combined-intro'], { opacity: 0, y: 20 });
-        const combinedTl = gsap.timeline({
-            scrollTrigger: { trigger: '.combined-section', start: 'top 75%', once: true }
-        });
-        combinedTl
-            .to(['.combined-tag', '.combined-heading'], { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' })
-            .to('.combined-intro', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '+=0.3');
+            // Treatment blocks: image + header first, then paragraph after a short interval
+            document.querySelectorAll('.treatment-block').forEach((block) => {
+                const img = block.querySelector('.treatment-block-img');
+                const tag = block.querySelector('.treatment-block-tag');
+                const name = block.querySelector('.treatment-block-name');
+                const para = block.querySelector('.treatment-block-body p');
+                gsap.set([img, tag, name, para], { opacity: 0, y: 30 });
+                const blockTl = gsap.timeline({
+                    scrollTrigger: { trigger: block, start: 'top 85%', once: true }
+                });
+                blockTl
+                    .to([img, tag, name], { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' })
+                    .to(para, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '+=0.3');
+            });
 
-        // CTA banner fade in
-        gsap.set('.treatments-cta', { opacity: 0 });
-        ScrollTrigger.create({
-            trigger: '.treatments-cta',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
-            },
-            once: true,
+            // Combined section header, then body paragraph after a short interval
+            gsap.set(['.combined-tag', '.combined-heading', '.combined-intro'], { opacity: 0, y: 20 });
+            const combinedTl = gsap.timeline({
+                scrollTrigger: { trigger: '.combined-section', start: 'top 75%', once: true }
+            });
+            combinedTl
+                .to(['.combined-tag', '.combined-heading'], { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' })
+                .to('.combined-intro', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '+=0.3');
+
+            // CTA banner fade in
+            gsap.set('.treatments-cta', { opacity: 0 });
+            ScrollTrigger.create({
+                trigger: '.treatments-cta',
+                start: 'top 85%',
+                onEnter: () => {
+                    gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
+                },
+                once: true,
+            });
         });
 
         // FAQ accordion

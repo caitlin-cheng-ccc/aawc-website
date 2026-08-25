@@ -438,8 +438,8 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
@@ -528,15 +528,20 @@
             });
         });
 
-        // CTA banner fade in
-        gsap.set('.treatments-cta', { opacity: 0 });
-        ScrollTrigger.create({
-            trigger: '.treatments-cta',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
-            },
-            once: true,
+        // Off-screen at load, so its setup is pushed off the critical
+        // first-paint/first-scroll path and onto the browser's idle time.
+        const scheduleIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+        scheduleIdle(() => {
+            // CTA banner fade in
+            gsap.set('.treatments-cta', { opacity: 0 });
+            ScrollTrigger.create({
+                trigger: '.treatments-cta',
+                start: 'top 85%',
+                onEnter: () => {
+                    gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
+                },
+                once: true,
+            });
         });
     </script>
 </body>

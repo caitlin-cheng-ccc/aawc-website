@@ -877,8 +877,8 @@
 
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
     <script>
         function subscribeNewsletter(form) {
             const name = form.fullName.value;
@@ -896,80 +896,86 @@
         document.addEventListener('cut', (e) => e.preventDefault());
         document.addEventListener('dragstart', (e) => e.preventDefault());
 
-        gsap.set('.slideshow-wrapper', { opacity: 0, x: 120 });
-        gsap.set('.dot-container',     { opacity: 0, x: 80 });
+        // All of these sections are well below the fold at load, so their
+        // ScrollTrigger setup is pushed off the critical first-paint/first-scroll
+        // path and onto the browser's idle time.
+        const scheduleIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+        scheduleIdle(() => {
+            gsap.set('.slideshow-wrapper', { opacity: 0, x: 120 });
+            gsap.set('.dot-container',     { opacity: 0, x: 80 });
 
-        ScrollTrigger.create({
-            trigger: '.slideshow-wrapper',
-            start: 'top 80%',
-            onEnter: () => {
-                gsap.to('.slideshow-wrapper', { opacity: 1, x: 0, duration: 0.9, ease: 'power3.out' });
-                gsap.to('.dot-container',     { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out', delay: 0.2 });
-            },
-            once: true,
-        });
-
-        gsap.to('.newsletter-bg', {
-            yPercent: 60,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '.newsletter-section',
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: true,
-            }
-        });
-
-        gsap.set('.newsletter-inner h2', { opacity: 0, y: 50 });
-        gsap.set('.newsletter-inner p',  { opacity: 0, y: 40 });
-        gsap.set('.newsletter-form',     { opacity: 0, y: 40 });
-
-        ScrollTrigger.create({
-            trigger: '.newsletter-section',
-            start: 'top 75%',
-            onEnter: () => {
-                gsap.to('.newsletter-inner h2', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
-                gsap.to('.newsletter-inner p',  { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.15 });
-                gsap.to('.newsletter-form',     { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.3 });
-            },
-            once: true,
-        });
-
-        const staffCards = document.querySelectorAll('.staff-card');
-        const staffDirections = [120, -120, 120, -120, 120];
-        staffCards.forEach((card, i) => {
-            gsap.set(card, { opacity: 0, x: staffDirections[i] });
             ScrollTrigger.create({
-                trigger: card,
-                start: 'top 82%',
+                trigger: '.slideshow-wrapper',
+                start: 'top 80%',
                 onEnter: () => {
-                    gsap.to(card, { opacity: 1, x: 0, duration: 0.85, ease: 'power3.out' });
+                    gsap.to('.slideshow-wrapper', { opacity: 1, x: 0, duration: 0.9, ease: 'power3.out' });
+                    gsap.to('.dot-container',     { opacity: 1, x: 0, duration: 0.7, ease: 'power3.out', delay: 0.2 });
                 },
                 once: true,
             });
+
+            gsap.to('.newsletter-bg', {
+                yPercent: 60,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.newsletter-section',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true,
+                }
+            });
+
+            gsap.set('.newsletter-inner h2', { opacity: 0, y: 50 });
+            gsap.set('.newsletter-inner p',  { opacity: 0, y: 40 });
+            gsap.set('.newsletter-form',     { opacity: 0, y: 40 });
+
+            ScrollTrigger.create({
+                trigger: '.newsletter-section',
+                start: 'top 75%',
+                onEnter: () => {
+                    gsap.to('.newsletter-inner h2', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+                    gsap.to('.newsletter-inner p',  { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.15 });
+                    gsap.to('.newsletter-form',     { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.3 });
+                },
+                once: true,
+            });
+
+            const staffCards = document.querySelectorAll('.staff-card');
+            const staffDirections = [120, -120, 120, -120, 120];
+            staffCards.forEach((card, i) => {
+                gsap.set(card, { opacity: 0, x: staffDirections[i] });
+                ScrollTrigger.create({
+                    trigger: card,
+                    start: 'top 82%',
+                    onEnter: () => {
+                        gsap.to(card, { opacity: 1, x: 0, duration: 0.85, ease: 'power3.out' });
+                    },
+                    once: true,
+                });
+            });
+
+            gsap.set('.gallery-img', { xPercent: -50, yPercent: -50, left: '50%', top: '50%' });
+            gsap.set('.img-a', { rotation: -8 });
+            gsap.set('.img-b', { rotation:  5 });
+            gsap.set('.img-c', { rotation: -4 });
+            gsap.set('.img-d', { rotation:  7 });
+
+            const galleryTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.gallery-pin',
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 1.5,
+                }
+            });
+
+            galleryTl
+                .to('.img-a', { top: '34%', left: '18%', rotation: -12, scale: 0.88, duration: 1 }, 0)
+                .to('.img-b', { top: '34%', left: '82%', rotation:   9, scale: 0.88, duration: 1 }, 0)
+                .to('.img-c', { top: '72%', left: '18%', rotation:  -6, scale: 0.88, duration: 1 }, 0)
+                .to('.img-d', { top: '72%', left: '82%', rotation:  10, scale: 0.88, duration: 1 }, 0)
+                .to('.gallery-cta', { opacity: 1, duration: 0.6, pointerEvents: 'auto' }, 0.6);
         });
-
-        gsap.set('.gallery-img', { xPercent: -50, yPercent: -50, left: '50%', top: '50%' });
-        gsap.set('.img-a', { rotation: -8 });
-        gsap.set('.img-b', { rotation:  5 });
-        gsap.set('.img-c', { rotation: -4 });
-        gsap.set('.img-d', { rotation:  7 });
-
-        const galleryTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: '.gallery-pin',
-                start: 'top top',
-                end: 'bottom bottom',
-                scrub: 1.5,
-            }
-        });
-
-        galleryTl
-            .to('.img-a', { top: '34%', left: '18%', rotation: -12, scale: 0.88, duration: 1 }, 0)
-            .to('.img-b', { top: '34%', left: '82%', rotation:   9, scale: 0.88, duration: 1 }, 0)
-            .to('.img-c', { top: '72%', left: '18%', rotation:  -6, scale: 0.88, duration: 1 }, 0)
-            .to('.img-d', { top: '72%', left: '82%', rotation:  10, scale: 0.88, duration: 1 }, 0)
-            .to('.gallery-cta', { opacity: 1, duration: 0.6, pointerEvents: 'auto' }, 0.6);
 
         let slideIndex = 0;
         const track = document.querySelector('.slideshow-track');

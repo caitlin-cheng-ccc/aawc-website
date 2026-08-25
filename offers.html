@@ -543,8 +543,8 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
@@ -592,29 +592,34 @@
             once: true,
         });
 
-        // Why Clients Choose Cherry: staged fade in (image, then heading, then details)
-        gsap.set(['.cherry-block-img', '.cherry-block-tag', '.cherry-block-name', '.cherry-block-details'], { opacity: 0, y: 20 });
-        const cherryBlockTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: '.cherry-block',
-                start: 'top 85%',
-                once: true,
-            }
-        });
-        cherryBlockTl
-            .to('.cherry-block-img', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' })
-            .to(['.cherry-block-tag', '.cherry-block-name'], { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.25')
-            .to('.cherry-block-details', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.25');
+        // Everything below is off-screen at load, so its setup is pushed off the
+        // critical first-paint/first-scroll path and onto the browser's idle time.
+        const scheduleIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+        scheduleIdle(() => {
+            // Why Clients Choose Cherry: staged fade in (image, then heading, then details)
+            gsap.set(['.cherry-block-img', '.cherry-block-tag', '.cherry-block-name', '.cherry-block-details'], { opacity: 0, y: 20 });
+            const cherryBlockTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.cherry-block',
+                    start: 'top 85%',
+                    once: true,
+                }
+            });
+            cherryBlockTl
+                .to('.cherry-block-img', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' })
+                .to(['.cherry-block-tag', '.cherry-block-name'], { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.25')
+                .to('.cherry-block-details', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.25');
 
-        // CTA banner fade in
-        gsap.set('.treatments-cta', { opacity: 0 });
-        ScrollTrigger.create({
-            trigger: '.treatments-cta',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
-            },
-            once: true,
+            // CTA banner fade in
+            gsap.set('.treatments-cta', { opacity: 0 });
+            ScrollTrigger.create({
+                trigger: '.treatments-cta',
+                start: 'top 85%',
+                onEnter: () => {
+                    gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
+                },
+                once: true,
+            });
         });
     </script>
 </body>

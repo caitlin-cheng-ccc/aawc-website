@@ -677,8 +677,8 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
@@ -726,78 +726,83 @@
             once: true,
         });
 
-        // Mission paragraph fade in
-        gsap.set('.benefits-copy p', { opacity: 0, y: 20 });
-        ScrollTrigger.create({
-            trigger: '.benefits-copy',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to('.benefits-copy p', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.2 });
-            },
-            once: true,
-        });
-
-        // Mission image shifts within its fixed-size frame as the page scrolls
-        gsap.fromTo('.benefits-block-img',
-            { y: -25 },
-            {
-                y: 25,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '.benefits-block-img-frame',
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: true,
-                }
-            }
-        );
-
-        // Underline draws in under the "Our Mission" heading
-        gsap.set('.benefits-heading-underline', { scaleX: 0 });
-        ScrollTrigger.create({
-            trigger: '.benefits-copy-heading',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to('.benefits-heading-underline', { scaleX: 1, duration: 0.7, ease: 'power2.out', delay: 0.2 });
-            },
-            once: true,
-        });
-
-        // Staff cards slide in alternating from left/right
-        const staffCards = document.querySelectorAll('.staff-card');
-        const staffDirections = [120, -120, 120, -120, 120];
-        staffCards.forEach((card, i) => {
-            gsap.set(card, { opacity: 0, x: staffDirections[i] });
+        // Everything below is off-screen at load, so its setup is pushed off the
+        // critical first-paint/first-scroll path and onto the browser's idle time.
+        const scheduleIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+        scheduleIdle(() => {
+            // Mission paragraph fade in
+            gsap.set('.benefits-copy p', { opacity: 0, y: 20 });
             ScrollTrigger.create({
-                trigger: card,
-                start: 'top 82%',
+                trigger: '.benefits-copy',
+                start: 'top 85%',
                 onEnter: () => {
-                    gsap.to(card, { opacity: 1, x: 0, duration: 0.85, ease: 'power3.out' });
+                    gsap.to('.benefits-copy p', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.2 });
                 },
                 once: true,
             });
-        });
 
-        // Visit Us map fade in
-        gsap.set(['.visit-map', '.visit-info-box'], { opacity: 0, y: 20 });
-        ScrollTrigger.create({
-            trigger: '.visit-block',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to(['.visit-map', '.visit-info-box'], { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.15 });
-            },
-            once: true,
-        });
+            // Mission image shifts within its fixed-size frame as the page scrolls
+            gsap.fromTo('.benefits-block-img',
+                { y: -25 },
+                {
+                    y: 25,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '.benefits-block-img-frame',
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: true,
+                    }
+                }
+            );
 
-        // CTA banner fade in
-        gsap.set('.treatments-cta', { opacity: 0 });
-        ScrollTrigger.create({
-            trigger: '.treatments-cta',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
-            },
-            once: true,
+            // Underline draws in under the "Our Mission" heading
+            gsap.set('.benefits-heading-underline', { scaleX: 0 });
+            ScrollTrigger.create({
+                trigger: '.benefits-copy-heading',
+                start: 'top 85%',
+                onEnter: () => {
+                    gsap.to('.benefits-heading-underline', { scaleX: 1, duration: 0.7, ease: 'power2.out', delay: 0.2 });
+                },
+                once: true,
+            });
+
+            // Staff cards slide in alternating from left/right
+            const staffCards = document.querySelectorAll('.staff-card');
+            const staffDirections = [120, -120, 120, -120, 120];
+            staffCards.forEach((card, i) => {
+                gsap.set(card, { opacity: 0, x: staffDirections[i] });
+                ScrollTrigger.create({
+                    trigger: card,
+                    start: 'top 82%',
+                    onEnter: () => {
+                        gsap.to(card, { opacity: 1, x: 0, duration: 0.85, ease: 'power3.out' });
+                    },
+                    once: true,
+                });
+            });
+
+            // Visit Us map fade in
+            gsap.set(['.visit-map', '.visit-info-box'], { opacity: 0, y: 20 });
+            ScrollTrigger.create({
+                trigger: '.visit-block',
+                start: 'top 85%',
+                onEnter: () => {
+                    gsap.to(['.visit-map', '.visit-info-box'], { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.15 });
+                },
+                once: true,
+            });
+
+            // CTA banner fade in
+            gsap.set('.treatments-cta', { opacity: 0 });
+            ScrollTrigger.create({
+                trigger: '.treatments-cta',
+                start: 'top 85%',
+                onEnter: () => {
+                    gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
+                },
+                once: true,
+            });
         });
     </script>
 </body>

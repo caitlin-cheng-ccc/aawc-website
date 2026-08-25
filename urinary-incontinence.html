@@ -738,8 +738,8 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/ScrollTrigger.min.js"></script>
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
@@ -787,107 +787,112 @@
             once: true,
         });
 
-        // Emsella photo fades in (description text stays static)
-        gsap.set('.treatment-block-img', { opacity: 0, y: 30 });
-        ScrollTrigger.create({
-            trigger: '.treatment-block-img',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to('.treatment-block-img', { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' });
-            },
-            once: true,
-        });
-
-        // "What Does This Treatment Address?" header flies up from below
-        gsap.set('.section-title-address', { opacity: 0, y: 60 });
-        ScrollTrigger.create({
-            trigger: '.section-title-address',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to('.section-title-address', { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' });
-            },
-            once: true,
-        });
-
-        // Only the "non-surgical, fully clothed, no-downtime" phrase animates in
-        gsap.set('.emsella-emphasis', { opacity: 0, y: 20 });
-        gsap.set('.emsella-underline', { scaleX: 0 });
-        ScrollTrigger.create({
-            trigger: '.emsella-emphasis',
-            start: 'top 90%',
-            onEnter: () => {
-                gsap.to('.emsella-emphasis', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
-                gsap.to('.emsella-underline', { scaleX: 1, duration: 0.6, ease: 'power2.out', delay: 0.5 });
-            },
-            once: true,
-        });
-
-        // "How Do Emsella Treatments Work?" header fades in
-        gsap.set('.section-title-how', { opacity: 0 });
-        ScrollTrigger.create({
-            trigger: '.section-title-how',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to('.section-title-how', { opacity: 1, duration: 0.9, ease: 'power2.out' });
-            },
-            once: true,
-        });
-
-        // Step boxes each fade in individually as the user scrolls to them
-        document.querySelectorAll('.step-item').forEach((el) => {
-            gsap.set(el, { opacity: 0, y: 30 });
+        // Everything below is off-screen at load, so its setup is pushed off the
+        // critical first-paint/first-scroll path and onto the browser's idle time.
+        const scheduleIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+        scheduleIdle(() => {
+            // Emsella photo fades in (description text stays static)
+            gsap.set('.treatment-block-img', { opacity: 0, y: 30 });
             ScrollTrigger.create({
-                trigger: el,
-                start: 'top 88%',
-                onEnter: () => {
-                    gsap.to(el, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
-                },
-                once: true,
-            });
-        });
-
-        // Stats row fade in
-        document.querySelectorAll('.stats-row').forEach((el) => {
-            gsap.set(el, { opacity: 0, y: 40 });
-            ScrollTrigger.create({
-                trigger: el,
+                trigger: '.treatment-block-img',
                 start: 'top 85%',
                 onEnter: () => {
-                    gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
+                    gsap.to('.treatment-block-img', { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' });
                 },
                 once: true,
             });
-        });
 
-        // Stat numbers count up
-        document.querySelectorAll('.stat-figure').forEach((el) => {
-            const target = parseInt(el.textContent, 10);
-            const counter = { val: 0 };
-            el.textContent = '0%';
+            // "What Does This Treatment Address?" header flies up from below
+            gsap.set('.section-title-address', { opacity: 0, y: 60 });
             ScrollTrigger.create({
-                trigger: el,
+                trigger: '.section-title-address',
                 start: 'top 85%',
                 onEnter: () => {
-                    gsap.to(counter, {
-                        val: target,
-                        duration: 1.6,
-                        ease: 'power2.out',
-                        onUpdate: () => { el.textContent = Math.round(counter.val) + '%'; },
-                    });
+                    gsap.to('.section-title-address', { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' });
                 },
                 once: true,
             });
-        });
 
-        // CTA banner fade in
-        gsap.set('.treatments-cta', { opacity: 0 });
-        ScrollTrigger.create({
-            trigger: '.treatments-cta',
-            start: 'top 85%',
-            onEnter: () => {
-                gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
-            },
-            once: true,
+            // Only the "non-surgical, fully clothed, no-downtime" phrase animates in
+            gsap.set('.emsella-emphasis', { opacity: 0, y: 20 });
+            gsap.set('.emsella-underline', { scaleX: 0 });
+            ScrollTrigger.create({
+                trigger: '.emsella-emphasis',
+                start: 'top 90%',
+                onEnter: () => {
+                    gsap.to('.emsella-emphasis', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
+                    gsap.to('.emsella-underline', { scaleX: 1, duration: 0.6, ease: 'power2.out', delay: 0.5 });
+                },
+                once: true,
+            });
+
+            // "How Do Emsella Treatments Work?" header fades in
+            gsap.set('.section-title-how', { opacity: 0 });
+            ScrollTrigger.create({
+                trigger: '.section-title-how',
+                start: 'top 85%',
+                onEnter: () => {
+                    gsap.to('.section-title-how', { opacity: 1, duration: 0.9, ease: 'power2.out' });
+                },
+                once: true,
+            });
+
+            // Step boxes each fade in individually as the user scrolls to them
+            document.querySelectorAll('.step-item').forEach((el) => {
+                gsap.set(el, { opacity: 0, y: 30 });
+                ScrollTrigger.create({
+                    trigger: el,
+                    start: 'top 88%',
+                    onEnter: () => {
+                        gsap.to(el, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
+                    },
+                    once: true,
+                });
+            });
+
+            // Stats row fade in
+            document.querySelectorAll('.stats-row').forEach((el) => {
+                gsap.set(el, { opacity: 0, y: 40 });
+                ScrollTrigger.create({
+                    trigger: el,
+                    start: 'top 85%',
+                    onEnter: () => {
+                        gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
+                    },
+                    once: true,
+                });
+            });
+
+            // Stat numbers count up
+            document.querySelectorAll('.stat-figure').forEach((el) => {
+                const target = parseInt(el.textContent, 10);
+                const counter = { val: 0 };
+                el.textContent = '0%';
+                ScrollTrigger.create({
+                    trigger: el,
+                    start: 'top 85%',
+                    onEnter: () => {
+                        gsap.to(counter, {
+                            val: target,
+                            duration: 1.6,
+                            ease: 'power2.out',
+                            onUpdate: () => { el.textContent = Math.round(counter.val) + '%'; },
+                        });
+                    },
+                    once: true,
+                });
+            });
+
+            // CTA banner fade in
+            gsap.set('.treatments-cta', { opacity: 0 });
+            ScrollTrigger.create({
+                trigger: '.treatments-cta',
+                start: 'top 85%',
+                onEnter: () => {
+                    gsap.to('.treatments-cta', { opacity: 1, duration: 1, ease: 'power2.out' });
+                },
+                once: true,
+            });
         });
 
         // FAQ accordion

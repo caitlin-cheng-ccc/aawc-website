@@ -4,8 +4,11 @@
    win on selector-equal specificity.
    ============================================================ */
 
-/* Safety net: never allow horizontal scroll from a stray fixed-width element */
-html, body { overflow-x: hidden; }
+/* Safety net: never allow horizontal scroll from a stray fixed-width element.
+   `clip` (not `hidden`) so html/body don't become CSS scroll containers —
+   `hidden`/`auto` here force the other axis to compute as `auto` too, which
+   breaks `position: sticky` (gallery pin) and desyncs GSAP ScrollTrigger. */
+html, body { overflow-x: clip; }
 
 /* ---------- Hamburger toggle button ---------- */
 .nav-toggle {
